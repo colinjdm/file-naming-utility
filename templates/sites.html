@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sites
+{% endblock %}
+
+{% block navbar %}
+    <li class="nav-item">
+        <a class="nav-link" href="/">File Naming</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="/sites">Facilities</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/counties">County Codes</a>
+    </li>
+{% endblock %}
+
+{% block main %}
+    <div style="padding-left: 20px; font-size: 14px;">
+        </br>
+        <ul>
+            <li>Choose a site to load site-specific data into the File Naming Utility.</li>
+        </ul>
+        <!-- A search bar to allow searching for partial names.
+        Searches are redirected back to this HTML page with a new list of
+        facilities from SQL that match the search term -->
+        <form action="/sites" method="POST" style="padding-left: 20px; font-size: 14px;">
+            <input autocomplete="on" class="w-auto" id="search" name="search" placeholder="Facility Name" type="text">
+            <input type="submit" value="Search"></button>
+        </form>
+    </div>
+    </br>
+    <div style="padding-left: 40px;">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Facility Name</th>
+                <th scope="col">Master ID</th>
+                <th scope="col">Permit Number</th>
+                <th scope="col">County Code</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+
+            <!-- Loop through each row of the dictionary "sites" -->
+            <tbody>
+                {% for site in sites %}
+                    <form action="/" method="POST">
+                        <tr>
+                            <!-- values are retained from each field in order to be returned to indexed.html
+                            once a specific facility is selected-->
+                            <td><input type="hidden" name="name" value="{{ site.name }}">{{ site.name }}</td>
+                            <td><input type="hidden" name="masterid" value="{{ site.masterid }}">{{ site.masterid }}</td>
+                            <td><input type="hidden" name="permit" value="{{ site.permit }}">{{ site.permit }}</td>
+                            <td><input type="hidden" name="county" value="{{ site.county }}">{{ site.county }}</td>
+                            <td><input type="submit" value="Enter Documents"></td>
+                        </tr>
+                    </form>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

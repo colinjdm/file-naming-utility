@@ -1,0 +1,32 @@
+
+:root {
+    --bs-body-bg: #212529 !important;
+    --bs-nav-tabs-link-active-color: #A8DF8E !important;
+}
+
+#tooltip1, #tooltip2, #tooltip3, #tooltip4, #tooltip5, #tooltip6, #tooltip7 {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.9); /* 90% opacity */
+    border: 1px solid #B2533E; /* 1px wide border */
+    padding: 20px; /* padding */
+    display: none; /* hides the tooltip initially */
+    max-width: 300px; /* limit size of the tooltip window */
+}
+
+h2 {
+    color: #A8DF8E; /* main title color */
+    text-shadow: 6px 6px 6px #000000;
+}
+
+h4 {
+    color: #A8DF8E; /* concatenated file name color */
+    text-shadow: 2px 2px 4px #000000;
+}
+
+.nav-item {
+    text-shadow: 4px 4px 4px #000000;
+}
+
+[data-bs-theme=dark] {
+    --bs-link-color: #A8DF8E !important;
+}

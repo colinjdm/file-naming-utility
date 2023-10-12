@@ -1,0 +1,122 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    File Naming
+{% endblock %}
+
+{% block navbar %}
+    <li class="nav-item">
+        <a class="nav-link active" href="/">File Naming</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/sites">Facilities</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/counties">County Codes</a>
+    </li>
+{% endblock %}
+
+{% block main %}
+    <table class="table" style="background-color: #0F0F0F;">
+        <thead>
+            <tr style="text-shadow: 2px 2px 4px #000000;">
+                <!--All headers-->
+                <th scope="col"></th>
+                <!-- Header -->
+                <th id="header1" scope="col">Master ID</th>
+                    <!-- Tooltip placeholder -->
+                    <div id="tooltip1"></div>
+                <th id="header2" scope="col">Permit Number</th>
+                    <div id="tooltip2"></div>
+                <th id="header3" scope="col">County Code</th>
+                    <div id="tooltip3"></div>
+                <th id="header4" scope="col">Doc Date</th>
+                    <div id="tooltip4"></div>
+                <th id="header5" scope="col">Doc Type</th>
+                    <div id="tooltip5"></div>
+                <th id="header6" scope="col">Initials</th>
+                    <div id="tooltip6"></div>
+                <th id="header7" scope="col">Doc Title</th>
+                    <div id="tooltip7"></div>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row"></th>
+                <!--All input fields-->
+                <td><input autocomplete="off" autofocus class="input" id="input1" placeholder="12345" size="8" type="text"></td>
+                <td><input autocomplete="off" autofocus class="input" id="input2" placeholder="ALD000000000" size="15" type="text"></td>
+                <td><input autocomplete="off" autofocus class="input" id="input3" placeholder="000" size="8" type="text"></td>
+                <td><input autocomplete="off" autofocus class="input" id="input4" placeholder="MM-DD-YYYY" size="8" type="text"></td>
+                <td><input autocomplete="off" autofocus class="input" id="input5" placeholder="CORR" size="8" type="text"></td>
+                <td><input autocomplete="off" autofocus class="input" id="input6" placeholder="ABC" size="8" type="text"></td>
+                <td><input autocomplete="off" autofocus class="input" id="input7" placeholder="Title" size="50" type="text"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!--Concatenate all input values-->
+    <script>
+        let inputs = document.querySelectorAll('.input');
+            inputs.forEach(input => {
+                /* "oninput" updates the result whenever a character is typed */
+                input.oninput = function() {
+                    var result = document.getElementById('input1').value + " "
+                        + document.getElementById('input2').value + " "
+                        + document.getElementById('input3').value + " "
+                        + document.getElementById('input4').value + " "
+                        + document.getElementById('input5').value + " "
+                        + document.getElementById('input6').value + " "
+                        + document.getElementById('input7').value;
+                    document.getElementById('result').innerText = result;
+                }
+            })
+    </script>
+
+    <div class="container">
+        <div class="row">
+            <!--Displays concatenated file name-->
+            <div class="col-sm">
+                <h4 id="result"></h4>
+            </div>
+            <div class="col-3">
+                <!--Copy button icon and corresponding html from https://icons.getbootstrap.com/icons/copy/-->
+                <button type="button" class="btn btn-dark" onclick="copyToClipboard()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2Zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6ZM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2Z"/>
+                    </svg>
+                    Copy
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Copy the result to the clipboard with one click.  JS provided by CS50.ai-->
+    <script>
+        function copyToClipboard() {
+            let copyText = document.getElementById("result");
+            navigator.clipboard.writeText(copyText.innerText);
+        }
+    </script>
+
+    <!--Mouseover tooltip popups-->
+    <script src="{{ url_for('static', filename='js/tooltip.js') }}"></script>
+    <script>
+        tooltip('header1');
+        tooltip('header2');
+        tooltip('header3');
+        tooltip('header4');
+        tooltip('header5');
+        tooltip('header6');
+        tooltip('header7');
+    </script>
+    </br>
+    <div style="padding-left: 20px; font-size: 14px;">
+        <ul>
+            <li>Unofficial tool for naming files intended for public record.</li>
+            <li>Mouseover categories for more information.</li>
+            <li>No user-provided data is retained on the server.</li>
+        </ul>
+    </div>
+{% endblock %}
