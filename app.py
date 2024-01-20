@@ -6,13 +6,9 @@ from flask import Flask, redirect, render_template, request
 
 app = Flask(__name__)
 
-# Configure SQLite database
-db = sqlite3.connect("filenaming.db")
-
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-
     if request.method == "GET":
         return render_template("index.html")
 
@@ -39,16 +35,22 @@ def index():
 
 @app.route("/sites", methods=["GET", "POST"])
 def sites():
+    # Configure SQLite database
+    db = sqlite3.connect("filenaming.db")
+    db.row_factory = sqlite3.Row
     # SELECT all sites in the database to be displayed on sites.html
     if request.method == "GET":
-        sites = db.execute("SELECT * FROM facilities ORDER BY name")
+        cursor = db.execute("SELECT * FROM facilities ORDER BY name")
+        sites = cursor.fetchall()
+        print(sites)
         return render_template("sites.html",
                             sites=sites)
 
     # SELECT only those sites whose "masterid"s partially match the search term
-    if request.method == "POST":
+    elif request.method == "POST":
         search = request.form.get("search")
-        sites = db.execute("SELECT * FROM facilities WHERE name LIKE ? ORDER BY name", ('%' + search + '%'))
+        cursor = db.execute("SELECT * FROM facilities WHERE name LIKE ? ORDER BY name", ('%' + search + '%',))
+        sites = cursor.fetchall()
         return render_template("sites.html",
                             sites=sites)
 
