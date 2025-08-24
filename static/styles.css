@@ -11,6 +11,7 @@
     padding: 20px; /* padding */
     display: none; /* hides the tooltip initially */
     max-width: 300px; /* limit size of the tooltip window */
+    pointer-events: none;
 }
 
 h2 {
