@@ -3,23 +3,29 @@
 # This file will create duplicate entries if it is run again
 
 import csv
+import sqlite3
 
-from cs50 import SQL
+conn = sqlite3.connect("filenaming.db")
+db = conn.cursor()
 
-db = SQL("sqlite:///filenaming.db")
+db.execute("CREATE TABLE IF NOT EXISTS facilities (name TEXT, permit TEXT, masterid TEXT, county TEXT)")
 
 # Open the CSV file
-with open('tabledata.csv', 'r', newline='') as csvfile:
+with open('Fund Code Master List_052125.csv', 'r', newline='') as csvfile:
     tablesites = csv.reader(csvfile)
-    print(tablesites)
+    # print(tablesites)
 
     data = []
     # Only name and masterid have so far been located.
     # If a better data source is located in the future, edit below to include additional rows for "permit" or "county"
     for row in tablesites:
-        dict = {'name':row[0], "masterid":row[2]}
+        dict = {"name":row[0], "permit":row[1], "masterid":row[2], "county":row[3]}
+        # print(dict)
         data.append(dict)
-        print(dict['name'])
-        print(dict['masterid'])
+        # print(dict['name'])
+        # print(dict['masterid'])
         # The next line is currently commented in order to prevent the file from inadvertently adding SQL entries
-        #db.execute("INSERT INTO facilities (name, masterid) VALUES (?, ?)", dict['name'], dict['masterid'])
+        db.execute("INSERT INTO facilities (name, permit, masterid, county) VALUES (?, ?, ?, ?)", (dict['name'], dict['permit'], dict['masterid'], dict['county']))
+
+conn.commit()
+conn.close()
