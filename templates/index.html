@@ -119,4 +119,23 @@
             <li>No user-provided data is retained on the server.</li>
         </ul>
     </div>
+    <select id="facility">
+        <option value="">Select a facility</option>
+    </select>
+    <script>
+        async function fetchData() {
+            const response = await fetch("{{ url_for('static', filename='output.json') }}");
+            const data = await response.json();
+            console.log(data);
+            const dropdown = document.getElementById('facility');
+            data.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.name;
+                option.textContent = item.name;
+                dropdown.appendChild(option);
+            });
+        }
+        fetchData();
+    </script>
+
 {% endblock %}
