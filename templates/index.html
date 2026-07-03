@@ -47,11 +47,28 @@
                 <td><input autocomplete="off" autofocus class="input" id="input1" placeholder="12345" size="8" type="text"></td>
                 <td><input autocomplete="off" autofocus class="input" id="input2" placeholder="ALD000000000" size="15" type="text"></td>
                 <td><input autocomplete="off" autofocus class="input" id="input3" placeholder="000" size="8" type="text"></td>
-                <td><input autocomplete="off" autofocus class="input" id="input4" placeholder="MM-DD-YYYY" size="8" type="text" pattern="[0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9]"></td>
+                <td><input autocomplete="off" autofocus class="input" id="input4" placeholder="MM-DD-YYYY" maxlength="10" size="8" type="text" pattern="[0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9]"></td>
                 <td><input autocomplete="off" autofocus class="input" id="input5" placeholder="CORR" size="8" type="text"></td>
                 <td><input autocomplete="off" autofocus class="input" id="input6" placeholder="ABC" size="8" type="text"></td>
                 <td><input autocomplete="off" autofocus class="input" id="input7" placeholder="Title" size="50" type="text"></td>
             </tr>
+            <script>
+                const input = document.getElementById("input4");
+
+                input.addEventListener("input", function () {
+                    // Keep only digits
+                    let value = this.value.replace(/\D/g, "");
+
+                    // Insert dashes
+                    if (value.length > 4) {
+                        value = value.slice(0, 2) + "-" + value.slice(2, 4) + "-" + value.slice(4, 8);
+                    } else if (value.length > 2) {
+                        value = value.slice(0, 2) + "-" + value.slice(2);
+                    }
+
+                    this.value = value;
+                });
+            </script>
         </tbody>
     </table>
 
@@ -112,13 +129,13 @@
         tooltip('header7');
     </script>
     </br>
-    <div style="padding-left: 20px; font-size: 14px;">
+    <!-- <div style="padding-left: 20px; font-size: 14px;">
         <ul>
             <li>Unofficial tool for naming files intended for public record.</li>
             <li>Mouseover categories for more information.</li>
             <li>No user-provided data is retained on the server.</li>
         </ul>
-    </div>
+    </div> -->
     <select id="facility">
         <option value="">Select a facility</option>
     </select>
@@ -130,9 +147,21 @@
             const dropdown = document.getElementById('facility');
             data.forEach(item => {
                 const option = document.createElement('option');
-                option.value = item.name;
+                option.permit = item.permit;
+                option.masterid = item.masterid;
+                option.county = item.county;
+                option.name = item.name;
                 option.textContent = item.name;
                 dropdown.appendChild(option);
+            });
+        
+        dropdown.addEventListener('change', function() {
+                const selectedOption = this.options[this.selectedIndex];
+                document.getElementById('input1').value = selectedOption.masterid || '';
+                document.getElementById('input2').value = selectedOption.permit || '';
+                document.getElementById('input3').value = selectedOption.county || '';
+                // Trigger input event to update the result
+                inputs.forEach(input => input.dispatchEvent(new Event('input')));
             });
         }
         fetchData();
